@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Image} from 'react-native';
-import styles from './ImageComponent.style.js';
+import styles from './CustomImage.style.js';
 
-const ImageComponet: React.FC = ({source, styles}) => {
+const CustomImage: React.FC = ({source, styles}) => {
   return (
     <View>
       <Image
@@ -14,4 +14,4 @@ const ImageComponet: React.FC = ({source, styles}) => {
   );
 };
 
-export default ImageComponet;
+export default CustomImage;
