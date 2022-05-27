@@ -1,49 +1,55 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+
 import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import OctIcons from 'react-native-vector-icons/Octicons';
+import {ThemeContext} from '../../themes/ThemeProvider.js';
+import CardDetail from './CardDetail';
+import {AnimationContext} from './AnimationProvider.js';
+
 const Card: React.FC = () => {
-  type children = {
-    children: React.ReactNode;
-  };
-  const Animations = require('./Animation.ts');
-  const locationIcon = <EvilIcon name="location" size={20} color="#BA28DE" />;
-  const rightIcon = <EvilIcon name="chevron-right" size={30} color="#BA28DE" />;
-  const phoneIcon = <FeatherIcon name="phone" size={20} color="#BA28DE" />;
-  const mailIcon = <OctIcons name="mail" size={20} color="#BA28DE" />;
-  const homeIcon = <OctIcons name="home" size={20} color="#BA28DE" />;
+  const {
+    interpolatedIcon,
+    OpenCardAnimation,
+    CloseCardAnimation,
+    animationDuration,
+  } = useContext(AnimationContext);
+
   const [isActive, setIsActive] = useState<boolean>(false);
+  const {theme} = useContext(ThemeContext);
+
   const toggleCard = (): void => {
     if (isActive == true) {
       //close dropdown
-      Animations.CloseCardAnimation();
+      CloseCardAnimation();
       setTimeout(() => {
         setIsActive(!isActive);
-      }, Animations.animationDuration - 100);
+      }, animationDuration - 100);
     } else {
       // open dropdown
       setIsActive(!isActive);
-      Animations.OpenCardAnimation();
+      OpenCardAnimation();
     }
   };
-
-  const CardDetail: React.ReactNode<children> = ({children}) => {
-    return (
-      <Animated.View
-        style={[
-          styles.detail,
-          {
-            maxHeight: Animations.interpolatedHeight,
-          },
-        ]}>
-        {children}
-      </Animated.View>
-    );
+  const evilIconConstructor = (
+    name: string,
+    size: number,
+    color: string,
+  ): React.ReactNode => {
+    return <EvilIcon name={name} size={size} color={color} />;
   };
+  const locationIcon = evilIconConstructor(
+    'location',
+    20,
+    theme.colors.text_icon,
+  );
+  const rightIcon = evilIconConstructor(
+    'chevron-right',
+    30,
+    theme.colors.text_icon,
+  );
   return (
-    <View style={[styles.card]}>
+    <View style={[styles.card, {backgroundColor: theme.colors.background_1}]}>
       <TouchableOpacity
         activeOpacity={0.6}
         style={[styles.info]}
@@ -57,39 +63,25 @@ const Card: React.FC = () => {
             }}
           />
           <View style={[styles.userinfo]}>
-            <Text style={[styles.name]}>Julia Barnett</Text>
-            <Text style={[styles.username]}>@goldenpanda611</Text>
+            <Text style={[styles.name, {color: theme.colors.text}]}>
+              Julia Barnett
+            </Text>
+            <Text style={[styles.username, {color: theme.colors.text}]}>
+              @goldenpanda611
+            </Text>
           </View>
         </View>
         <View style={[styles.rightContainer]}>
           {locationIcon}
-          <Text style={[styles.country]}>United Kingdom</Text>
-          <Animated.View
-            style={[{transform: [{rotate: Animations.interpolatedIcon}]}]}>
+          <Text style={[styles.country, {color: theme.colors.text_icon}]}>
+            United Kingdom
+          </Text>
+          <Animated.View style={[{transform: [{rotate: interpolatedIcon}]}]}>
             {rightIcon}
           </Animated.View>
         </View>
       </TouchableOpacity>
-      {isActive && (
-        <CardDetail>
-          <View style={[styles.detailElement]}>
-            {phoneIcon}
-            <Text style={[styles.detailElementText]}>01291 61297</Text>
-          </View>
-          <View style={[styles.detailElement]}>
-            {mailIcon}
-            <Text style={[styles.detailElementText]}>
-              julia.barnett@example.com
-            </Text>
-          </View>
-          <View style={[styles.detailElement]}>
-            {homeIcon}
-            <Text style={[styles.detailElementText, styles.homeText]}>
-              Park Road, 9754 Peterborough, Cambridgeshire Postcode: HI73 6GL
-            </Text>
-          </View>
-        </CardDetail>
-      )}
+      {isActive && <CardDetail />}
     </View>
   );
 };

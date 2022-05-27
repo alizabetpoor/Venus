@@ -5,7 +5,6 @@ export default StyleSheet.create({
     display: 'flex',
     marginHorizontal: 16,
     borderRadius: 10,
-    backgroundColor: '#ffffff',
     marginBottom: 8,
     paddingHorizontal: 16,
   },
@@ -46,29 +45,7 @@ export default StyleSheet.create({
     fontWeight: '400',
   },
   country: {
-    color: '#BA28DE',
     fontSize: 10,
     fontWeight: '400',
-  },
-  detail: {
-    marginTop: 4,
-    marginHorizontal: 4,
-    borderTopColor: '#E6BFF3',
-    paddingTop: 8,
-    borderTopWidth: 1,
-    paddingBottom: 15,
-  },
-  detailElement: {
-    display: 'flex',
-    flexDirection: 'row',
-    paddingHorizontal: 15,
-    justifyContent: 'flex-start',
-    paddingVertical: 14,
-  },
-  detailElementText: {
-    paddingLeft: 9,
-  },
-  homeText: {
-    width: '80%',
   },
 });
