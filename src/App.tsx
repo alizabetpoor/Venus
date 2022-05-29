@@ -7,6 +7,8 @@ import {Provider} from 'react-redux';
 import store from './store/Store';
 import Test from './views/test';
 
+import Home from './views/Home';
+
 const App: React.FC = () => {
   return (
     <Provider store={store}>
@@ -14,9 +16,7 @@ const App: React.FC = () => {
         <ThemeProvider>
           <AnimationProvider>
             <View>
-              <Card />
-              <Text>Hello</Text>
-              <Test />
+              <Home />
             </View>
           </AnimationProvider>
         </ThemeProvider>
