@@ -8,21 +8,21 @@ import store from './store/Store';
 import Test from './views/test';
 
 const App: React.FC = () => {
-    return (
-        <Provider store={store}>
-            <SafeAreaView>
-                <ThemeProvider>
-                    <AnimationProvider>
-                        <View>
-                            <Card/>
-                            <Text>Hello</Text>
-                            <Test/>
-                        </View>
-                    </AnimationProvider>
-                </ThemeProvider>
-            </SafeAreaView>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <SafeAreaView>
+        <ThemeProvider>
+          <AnimationProvider>
+            <View>
+              <Card />
+              <Text>Hello</Text>
+              <Test />
+            </View>
+          </AnimationProvider>
+        </ThemeProvider>
+      </SafeAreaView>
+    </Provider>
+  );
 };
 
 export default App;

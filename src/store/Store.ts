@@ -8,3 +8,5 @@ const store = configureStore({
   middleware: [thunk, logger],
 });
 export default store;
+
+export type AppDispatch = typeof store.dispatch;
