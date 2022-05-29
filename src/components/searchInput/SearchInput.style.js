@@ -23,7 +23,7 @@ export default StyleSheet.create({
     minWidth: 230,
     borderRightColor: '#aaa',
     borderRightWidth: 1,
-    marginRight: 7,
+    marginRight: 12,
   },
   themeButton: {
     display: 'flex',
