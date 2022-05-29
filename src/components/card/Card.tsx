@@ -6,6 +6,19 @@ import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
 import CardDetail from './CardDetail';
 import {AnimationContext} from './AnimationProvider.js';
+import {
+  PanGestureHandler,
+  PanGestureHandlerGestureEvent,
+} from 'react-native-gesture-handler';
+import {
+  runOnJS,
+  useAnimatedGestureHandler,
+  withTiming,
+} from 'react-native-reanimated';
+import Reanimated, {
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 const Card: React.FC = () => {
   const {
@@ -19,6 +32,8 @@ const Card: React.FC = () => {
   const {theme} = useContext(ThemeContext);
 
   const toggleCard = (): void => {
+    console.log('toggleCard');
+
     if (isActive == true) {
       //close dropdown
       CloseCardAnimation();
@@ -48,41 +63,88 @@ const Card: React.FC = () => {
     30,
     theme.colors.text_icon,
   );
+  const offset = useSharedValue(0);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{translateX: offset.value}],
+  }));
+
+  const onGestureEvent = useAnimatedGestureHandler<
+    PanGestureHandlerGestureEvent,
+    {shouldShowExtraDetail: boolean}
+  >(
+    {
+      onActive: (event, ctx) => {
+        const xVal = Math.floor(event.translationX);
+        offset.value = xVal;
+
+        // use Absolute value so the user could swipe either left or right
+        if (Math.abs(xVal) <= 40) {
+          ctx.shouldShowExtraDetail = false;
+        } else {
+          ctx.shouldShowExtraDetail = true;
+        }
+      },
+      onEnd: (_, ctx) => {
+        if (ctx.shouldShowExtraDetail) {
+          // if the item should be removed, animate it off the screen first
+          offset.value = withTiming(0);
+          console.log('should show extra detail');
+          setIsActive(!isActive);
+          // then trigger the remove mood item with a small delay
+        } else {
+          // otherwise, animate the item back to the start
+          offset.value = withTiming(0);
+        }
+      },
+    },
+    [],
+  );
+
   return (
-    <View style={[styles.card, {backgroundColor: theme.colors.background_1}]}>
-      <TouchableOpacity
-        activeOpacity={0.6}
-        style={[styles.info]}
-        onPress={() => toggleCard()}>
-        <View style={[styles.leftContainer]}>
-          <Image
-            style={[styles.photo]}
-            resizeMode="contain"
-            source={{
-              uri: 'https://cdn1.vectorstock.com/i/thumb-large/64/60/face-avatar-beautiful-woman-on-red-vector-31326460.jpg',
-            }}
-          />
-          <View style={[styles.userinfo]}>
-            <Text style={[styles.name, {color: theme.colors.text}]}>
-              Julia Barnett
-            </Text>
-            <Text style={[styles.username, {color: theme.colors.text}]}>
-              @goldenpanda611
-            </Text>
+    <PanGestureHandler
+      minDeltaX={1}
+      minDeltaY={100}
+      onGestureEvent={onGestureEvent}>
+      <Reanimated.View
+        style={[
+          styles.card,
+          {backgroundColor: theme.colors.background_1},
+          animatedStyle,
+        ]}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          style={[styles.info]}
+          onPress={() => toggleCard()}>
+          <View style={[styles.leftContainer]}>
+            <Image
+              style={[styles.photo]}
+              resizeMode="contain"
+              source={{
+                uri: 'https://cdn1.vectorstock.com/i/thumb-large/64/60/face-avatar-beautiful-woman-on-red-vector-31326460.jpg',
+              }}
+            />
+            <View style={[styles.userinfo]}>
+              <Text style={[styles.name, {color: theme.colors.text}]}>
+                Julia Barnett
+              </Text>
+              <Text style={[styles.username, {color: theme.colors.text}]}>
+                @goldenpanda611
+              </Text>
+            </View>
           </View>
-        </View>
-        <View style={[styles.rightContainer]}>
-          {locationIcon}
-          <Text style={[styles.country, {color: theme.colors.text_icon}]}>
-            United Kingdom
-          </Text>
-          <Animated.View style={[{transform: [{rotate: interpolatedIcon}]}]}>
-            {rightIcon}
-          </Animated.View>
-        </View>
-      </TouchableOpacity>
-      {isActive && <CardDetail />}
-    </View>
+          <View style={[styles.rightContainer]}>
+            {locationIcon}
+            <Text style={[styles.country, {color: theme.colors.text_icon}]}>
+              United Kingdom
+            </Text>
+            <Animated.View style={[{transform: [{rotate: interpolatedIcon}]}]}>
+              {rightIcon}
+            </Animated.View>
+          </View>
+        </TouchableOpacity>
+        {isActive && <CardDetail />}
+      </Reanimated.View>
+    </PanGestureHandler>
   );
 };
 

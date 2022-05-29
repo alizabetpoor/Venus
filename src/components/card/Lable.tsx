@@ -23,6 +23,8 @@ const Lable = ({
   isIcon,
   isText,
 }: LableProps) => {
+  //pishfarz
+
   return (
     <View style={lableStyle}>
       {isIcon && <View style={iconWrapperStyle}>{icon}</View>}

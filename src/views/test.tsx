@@ -31,7 +31,6 @@ const Test = ({getUsers, loading, users}: testProps) => {
   useEffect(() => {
     getUsers(1);
   }, []);
-  console.log('users', users);
 
   return (
     <SafeAreaView>

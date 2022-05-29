@@ -1,26 +1,34 @@
-import {SafeAreaView, View, Text} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import {ThemeProvider} from './themes/ThemeProvider';
 import React from 'react';
-import Card from './components/card/Card';
 import {AnimationProvider} from './components/card/AnimationProvider';
 import {Provider} from 'react-redux';
 import store from './store/Store';
-import Test from './views/test';
+import {Platform, UIManager} from 'react-native';
+
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 import Home from './views/Home';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <SafeAreaView>
-        <ThemeProvider>
-          <AnimationProvider>
-            <View>
-              <Home />
-            </View>
-          </AnimationProvider>
-        </ThemeProvider>
-      </SafeAreaView>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <SafeAreaView>
+          <ThemeProvider>
+            <AnimationProvider>
+              <View>
+                <Home />
+              </View>
+            </AnimationProvider>
+          </ThemeProvider>
+        </SafeAreaView>
+      </GestureHandlerRootView>
     </Provider>
   );
 };
