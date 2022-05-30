@@ -12,7 +12,7 @@ const SearchInput = () => {
       <View style={styles.searchBox}>
         <TextInput
           style={styles.searchText}
-          placeholder="SearchInput users ..."
+          placeholder="search users ..."
           maxLength={30}
           // onChangeText={onChangeNumber}
           // keyboardType="numeric"

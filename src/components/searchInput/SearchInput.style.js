@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   headerBox: {
@@ -15,7 +15,7 @@ export default StyleSheet.create({
     marginVertical: 24,
     height: 40,
     borderRadius: 10,
-    paddingLeft: 14,
+    paddingLeft: 12,
     paddingRight: 8,
     backgroundColor: '#fff',
     flex: 1,
