@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {getUsersThunk} from '../../services/ApiService';
 
-type UsersState = {
+export type UsersState = {
   users: [];
   loading: boolean;
   error: boolean;
