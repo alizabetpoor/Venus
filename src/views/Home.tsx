@@ -1,11 +1,11 @@
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import React, {useState, FC} from 'react';
 import Styles from './Home.style.js';
 import SearchInput from '../components/searchInput/SearchInput';
 import Card from '../components/card/Card';
 import {connect} from 'react-redux';
-import {getUsersThunk} from '../services/ApiService.js';
-import {getAppData, setAppData} from '../utils/AsyncStorage.js';
+import {getUsersThunk} from '../services/ApiService';
+import {getAppData, setAppData} from '../utils/AsyncStorage';
 import {useEffect} from 'react';
 
 type testProps = {
@@ -33,7 +33,7 @@ const Home: React.FC = ({getUsers, loading, users}: testProps) => {
   }, [mainTheme]);
 
   useEffect(() => {
-    getUsers(1);
+    getUsers(15);
   }, []);
 
   return (
@@ -44,8 +44,14 @@ const Home: React.FC = ({getUsers, loading, users}: testProps) => {
         <Text style={[Styles.title]}>Users</Text>
       </View>
       <View>
-        <Card />
-        <Card />
+        {!loading && (
+          <FlatList
+            data={users.results}
+            renderItem={obj => <Card userDetail={obj.item} />}
+            contentContainerStyle={{paddingBottom: 200}}
+            keyExtractor={(item: any, key: number) => key}
+          />
+        )}
       </View>
     </View>
   );
