@@ -17,36 +17,36 @@ const CardDetail: React.FC = () => {
   const homeIcon = (
     <OctIcons name="home" size={20} color={theme.colors.text_icon} />
   );
-
+    const animatedViewStyle = [styles.detail,
+      {
+        maxHeight: interpolatedHeight,
+        borderTopColor: theme.colors.text_icon,
+      },]
+    const detailElementTextStyle = [styles.detailElementText, {color: theme.colors.text}]
+    const homeTextStyle = [
+      styles.detailElementText,
+      {width:'80%'},
+      {color: theme.colors.text},
+    ]
   return (
     <Animated.View
-      style={[
-        styles.detail,
-        {
-          maxHeight: interpolatedHeight,
-          borderTopColor: theme.colors.text_icon,
-        },
-      ]}>
+      style={animatedViewStyle}>
       <View style={[styles.detailElement]}>
         {phoneIcon}
-        <Text style={[styles.detailElementText, {color: theme.colors.text}]}>
+        <Text style={detailElementTextStyle}>
           01291 61297
         </Text>
       </View>
       <View style={[styles.detailElement]}>
         {mailIcon}
-        <Text style={[styles.detailElementText, {color: theme.colors.text}]}>
+        <Text style={detailElementTextStyle}>
           julia.barnett@example.com
         </Text>
       </View>
       <View style={[styles.detailElement]}>
         {homeIcon}
         <Text
-          style={[
-            styles.detailElementText,
-            styles.homeText,
-            {color: theme.colors.text},
-          ]}>
+          style={homeTextStyle}>
           Park Road, 9754 Peterborough, Cambridgeshire Postcode: HI73 6GL
         </Text>
       </View>

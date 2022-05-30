@@ -19,7 +19,5 @@ export default StyleSheet.create({
   detailElementText: {
     paddingLeft: 9,
   },
-  homeText: {
-    width: '80%',
-  },
+
 });
