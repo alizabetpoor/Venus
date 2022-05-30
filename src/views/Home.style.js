@@ -5,11 +5,6 @@ export default StyleSheet.create({
     backgroundColor: '#F9F1F7',
     height: '100%' 
   },
-  line: {
-    marginTop: 30,
-    borderBottomColor: '#AAAAAA',
-    borderBottomWidth: 1,
-  },
   title: {
     marginLeft : 20,
     fontSize: 24,

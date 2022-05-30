@@ -9,7 +9,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={[Styles.layout]}>
-      <View style={[Styles.line]}></View>
+      <View />
       <SearchInput />
       <View>
         <Text style={[Styles.title]}>Users</Text>
