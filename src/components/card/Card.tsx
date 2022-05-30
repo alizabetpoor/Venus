@@ -4,7 +4,7 @@ import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
-import CardDetail from './CardDetail';
+import CardDetail from './Partial/CardDetail';
 import {AnimationContext} from './AnimationProvider.js';
 
 const Card: React.FC = () => {
