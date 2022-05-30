@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import React, {useState, FC} from 'react';
+import React, {useState} from 'react';
 import Styles from './Home.style.js';
 import SearchInput from '../components/searchInput/SearchInput';
 import Card from '../components/card/Card';
