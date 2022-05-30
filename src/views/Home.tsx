@@ -1,18 +1,21 @@
 import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import Styles from './Home.style.js';
 import SearchInput from '../components/searchInput/SearchInput';
 import Card from '../components/card/Card';
+import {useContext} from 'react';
+import {ThemeContext} from '../themes/ThemeProvider.js';
 
 const Home: React.FC = () => {
-  const [users, setUsers] = useState([]);
+
+  const {theme} = useContext(ThemeContext);
 
   return (
-    <View style={[Styles.layout]}>
+    <View style={[Styles.layout, {backgroundColor: theme.colors.background_2}]}>
       <View />
       <SearchInput />
       <View>
-        <Text style={[Styles.title]}>Users</Text>
+        <Text style={[Styles.title, {color: theme.colors.text}]}>Users</Text>
       </View>
       <View>
         <Card />
