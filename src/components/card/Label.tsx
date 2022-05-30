@@ -1,30 +1,29 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 
-type LableProps = {
+type LabelProps = {
   text?: string;
   textStyle?: any;
   icon?: any;
   iconStyle?: any;
   textWrapperStyle?: any;
   iconWrapperStyle?: any;
-  lableStyle?: any;
+  labelStyle?: any;
   isIcon?: boolean;
   isText?: boolean;
 };
-const Lable = ({
+const Label = ({
   text,
   textStyle,
   icon,
-  iconStyle,
   textWrapperStyle,
   iconWrapperStyle,
-  lableStyle,
+  labelStyle,
   isIcon,
   isText,
-}: LableProps) => {
+}: LabelProps) => {
   return (
-    <View style={lableStyle}>
+    <View style={labelStyle}>
       {isIcon && <View style={iconWrapperStyle}>{icon}</View>}
       {isText && (
         <View style={textWrapperStyle}>
@@ -34,4 +33,4 @@ const Lable = ({
     </View>
   );
 };
-export default Lable;
+export default Label;
