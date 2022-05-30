@@ -20,7 +20,13 @@ import Reanimated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
-const Card: React.FC = () => {
+type cardInfoProps = {
+  userDetail: {
+    [key: string]: any;
+  };
+};
+
+const Card: React.FC<cardInfoProps> = ({userDetail}) => {
   const {
     interpolatedIcon,
     OpenCardAnimation,
@@ -120,29 +126,29 @@ const Card: React.FC = () => {
               style={[styles.photo]}
               resizeMode="contain"
               source={{
-                uri: 'https://cdn1.vectorstock.com/i/thumb-large/64/60/face-avatar-beautiful-woman-on-red-vector-31326460.jpg',
+                uri: userDetail.picture.large,
               }}
             />
             <View style={[styles.userinfo]}>
               <Text style={[styles.name, {color: theme.colors.text}]}>
-                Julia Barnett
+                {userDetail.first + ' ' + userDetail.last}
               </Text>
               <Text style={[styles.username, {color: theme.colors.text}]}>
-                @goldenpanda611
+                {userDetail.login.username}
               </Text>
             </View>
           </View>
           <View style={[styles.rightContainer]}>
             {locationIcon}
             <Text style={[styles.country, {color: theme.colors.text_icon}]}>
-              United Kingdom
+              {userDetail.location.country}
             </Text>
             <Animated.View style={[{transform: [{rotate: interpolatedIcon}]}]}>
               {rightIcon}
             </Animated.View>
           </View>
         </TouchableOpacity>
-        {isActive && <CardDetail />}
+        {isActive && <CardDetail userDetail={userDetail} />}
       </Reanimated.View>
     </PanGestureHandler>
   );

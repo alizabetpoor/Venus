@@ -5,7 +5,12 @@ import OctIcons from 'react-native-vector-icons/Octicons';
 import styles from './CardDetail.style.js';
 import {ThemeContext} from '../../themes/ThemeProvider';
 import {AnimationContext} from './AnimationProvider.js';
-const CardDetail: React.FC = () => {
+type detailInfoProps = {
+  userDetail: {
+    [key: string]: any;
+  };
+};
+const CardDetail: React.FC<detailInfoProps> = ({userDetail}) => {
   const {theme} = useContext(ThemeContext);
   const {interpolatedHeight} = useContext(AnimationContext);
   const phoneIcon = (
@@ -17,7 +22,10 @@ const CardDetail: React.FC = () => {
   const homeIcon = (
     <OctIcons name="home" size={20} color={theme.colors.text_icon} />
   );
-
+  const address: string = `${userDetail.location.street.name},\
+   ${userDetail.location.street.number}\
+   ${userDetail.location.city},${userDetail.location.state}\
+    postcode: ${userDetail.location.postcode}`;
   return (
     <Animated.View
       style={[
@@ -30,13 +38,13 @@ const CardDetail: React.FC = () => {
       <View style={[styles.detailElement]}>
         {phoneIcon}
         <Text style={[styles.detailElementText, {color: theme.colors.text}]}>
-          01291 61297
+          {userDetail.phone}
         </Text>
       </View>
       <View style={[styles.detailElement]}>
         {mailIcon}
         <Text style={[styles.detailElementText, {color: theme.colors.text}]}>
-          julia.barnett@example.com
+          {userDetail.email}
         </Text>
       </View>
       <View style={[styles.detailElement]}>
@@ -47,7 +55,7 @@ const CardDetail: React.FC = () => {
             styles.homeText,
             {color: theme.colors.text},
           ]}>
-          Park Road, 9754 Peterborough, Cambridgeshire Postcode: HI73 6GL
+          {address}
         </Text>
       </View>
     </Animated.View>
