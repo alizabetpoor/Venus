@@ -1,5 +1,5 @@
 import {View, Text, FlatList} from 'react-native';
-import React, {useState, FC} from 'react';
+import React, {useState, createRef} from 'react';
 import Styles from './Home.style.js';
 import SearchInput from '../components/searchInput/SearchInput';
 import Card from '../components/card/Card';
@@ -7,7 +7,6 @@ import {connect} from 'react-redux';
 import {getUsersThunk} from '../services/ApiService';
 import {getAppData, setAppData} from '../utils/AsyncStorage';
 import {useEffect} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 import {useContext} from 'react';
 import {ThemeContext} from '../themes/ThemeProvider.js';
 
@@ -19,6 +18,7 @@ type testProps = {
 
 const Home: FC = ({getUsers, loading, users}: testProps) => {
   const [mainTheme, setMainTheme] = useState('');
+  const [openCardId, setOpenCardId] = useState('');
   const {theme} = useContext(ThemeContext);
   React.useEffect(() => {
     const getDataFromStorage = async () => {
@@ -31,7 +31,9 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
     };
     getDataFromStorage();
   }, []);
-
+  const toggleOff = uuid => {
+    setOpenCardId(uuid);
+  };
   useEffect(() => {
     setAppData({theme: mainTheme});
   }, [mainTheme]);
@@ -50,10 +52,18 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
       <View>
         {!loading && (
           <FlatList
-            data={users}
-            renderItem={obj => <Card userDetail={obj.item} />}
-            contentContainerStyle={{paddingBottom: 200}}
-            keyExtractor={(item: any, key: number) => key}
+            data={users.results}
+            renderItem={obj => (
+              <Card
+                userDetail={obj.item}
+                isActive={openCardId == obj.item.login.uuid ? true : false}
+                {...obj}
+                toggleOff={toggleOff}
+              />
+            )}
+            contentContainerStyle={{paddingBottom: 150}}
+            keyExtractor={(item: any) => item.login.uuid}
+            extraData={openCardId}
           />
         )}
       </View>
