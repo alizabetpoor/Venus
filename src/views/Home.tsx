@@ -4,9 +4,10 @@ import Styles from './Home.style.js';
 import SearchInput from '../components/searchInput/SearchInput';
 import Card from '../components/card/Card';
 import {connect} from 'react-redux';
-import {getUsersThunk} from '../services/ApiService.js';
-import {getAppData, setAppData} from '../utils/AsyncStorage.js';
+import {getUsersThunk} from '../services/ApiService';
+import {getAppData, setAppData} from '../utils/AsyncStorage';
 import {useEffect} from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type testProps = {
   getUsers: (usersNumber: number) => void;
@@ -44,7 +45,6 @@ const Home: React.FC = ({getUsers, loading, users}: testProps) => {
         <Text style={[Styles.title]}>Users</Text>
       </View>
       <View>
-        <Card />
         <Card />
       </View>
     </View>
