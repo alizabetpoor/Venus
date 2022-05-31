@@ -9,6 +9,7 @@ type detailInfoProps = {
   userDetail: {
     [key: string]: any;
   };
+  animatedHeight: any;
 };
 const CardDetail: React.FC<detailInfoProps> = ({
   userDetail,

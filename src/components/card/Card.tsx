@@ -1,5 +1,4 @@
-import React, {useState, useContext, useRef} from 'react';
-
+import React, {useContext, useRef} from 'react';
 import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
@@ -13,13 +12,24 @@ type cardInfoProps = {
   };
 };
 
+
+const Card: React.FC<cardInfoProps> = ({
+  userDetail,
+  index,
+  isActive,
+  toggleOff,
+}) => {
+  const {OpenCardAnimation, CloseCardAnimation, animationDuration} =
+    useContext(AnimationContext);
+  const animatedHeight = useRef(new Animated.Value(0)).current;
+  const animatedIcon = useRef(new Animated.Value(0)).current;
+
 const Card: React.FC<cardInfoProps> = ({userDetail, index}) => {
   const {OpenCardAnimation, CloseCardAnimation, animationDuration} =
     useContext(AnimationContext);
   // const ref = useRef(null);
   const animatedHeight = useRef(new Animated.Value(0)).current;
   const animatedIcon = useRef(new Animated.Value(0)).current;
-  const [isActive, setIsActive] = useState<boolean>(false);
   const {theme} = useContext(ThemeContext);
 
   const toggleCard = (): void => {
@@ -27,12 +37,12 @@ const Card: React.FC<cardInfoProps> = ({userDetail, index}) => {
       //close dropdown
       CloseCardAnimation(animatedIcon, animatedHeight);
       setTimeout(() => {
-        setIsActive(!isActive);
+        toggleOff('');
       }, animationDuration - 100);
     } else {
       // open dropdown
-      setIsActive(!isActive);
       OpenCardAnimation(animatedIcon, animatedHeight);
+      toggleOff(userDetail.login.uuid);
     }
   };
 
@@ -51,6 +61,11 @@ const Card: React.FC<cardInfoProps> = ({userDetail, index}) => {
   const locationIcon = evilIconConstructor(
     'location',
     20,
+    theme.colors.text_icon,
+  );
+  const bottomIcon = evilIconConstructor(
+    'chevron-down',
+    30,
     theme.colors.text_icon,
   );
   const rightIcon = evilIconConstructor(
@@ -88,9 +103,8 @@ const Card: React.FC<cardInfoProps> = ({userDetail, index}) => {
           <Text style={[styles.country, {color: theme.colors.text_icon}]}>
             {userDetail.location.country}
           </Text>
-          <Animated.View style={[{transform: [{rotate: interpolatedIcon}]}]}>
-            {rightIcon}
-          </Animated.View>
+          {!isActive ? rightIcon : bottomIcon}
+
         </View>
       </TouchableOpacity>
       {isActive && (
