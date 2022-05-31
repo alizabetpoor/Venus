@@ -27,8 +27,7 @@ export const getUsersSlice = createSlice({
       state.needToReFetch = false;
     });
     builder.addCase(getUsersThunk.fulfilled, (state, action) => {
-      const length = state.users.length;
-      state.users[length - 1] = action.payload;
+      state.users = action.payload;
       state.loading = false;
     });
     builder.addCase(getUsersThunk.rejected, (state, action) => {
