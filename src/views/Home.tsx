@@ -1,5 +1,5 @@
 import {View, Text, FlatList} from 'react-native';
-import React, {useState, FC} from 'react';
+import React, {useState, createRef} from 'react';
 import Styles from './Home.style.js';
 import SearchInput from '../components/searchInput/SearchInput';
 import Card from '../components/card/Card';
@@ -7,7 +7,6 @@ import {connect} from 'react-redux';
 import {getUsersThunk} from '../services/ApiService';
 import {getAppData, setAppData} from '../utils/AsyncStorage';
 import {useEffect} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
 import {useContext} from 'react';
 import {ThemeContext} from '../themes/ThemeProvider.js';
 import {refetchUsers} from '../store/reducer/getUsersReducer';
@@ -36,6 +35,7 @@ const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
   const [oldUsers, setOldUsers] = useState([]);
   const [openCardId, setOpenCardId] = useState('');
   const [mainTheme, setMainTheme] = useState('');
+  const [openCardId, setOpenCardId] = useState('');
   const {theme} = useContext(ThemeContext);
   React.useEffect(() => {
     const getDataFromStorage = async () => {
@@ -47,11 +47,9 @@ const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
     };
     getDataFromStorage();
   }, []);
-
   const toggleOff = uuid => {
     setOpenCardId(uuid);
   };
-
   useEffect(() => {
     setAppData({theme: mainTheme});
   }, [mainTheme]);
@@ -82,7 +80,7 @@ const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
                 toggleOff={toggleOff}
               />
             )}
-            contentContainerStyle={{paddingBottom: 200}}
+            contentContainerStyle={{paddingBottom: 150}}    
             onEndReached={() => setFetch((state: number) => state + 1)}
             keyExtractor={(item: any) => item.login.uuid}
             extraData={openCardId}
