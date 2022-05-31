@@ -7,8 +7,10 @@ import {connect} from 'react-redux';
 import {getUsersThunk} from '../services/ApiService';
 import {getAppData, setAppData} from '../utils/AsyncStorage';
 import {useEffect} from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
 import {useContext} from 'react';
 import {ThemeContext} from '../themes/ThemeProvider.js';
+
 
 type testProps = {
     getUsers: (usersNumber: number) => void;
@@ -39,6 +41,7 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
         getUsers(15);
     }, []);
 
+
     return (
     <View style={[Styles.layout, {backgroundColor: theme.colors.background_2}]}>
       <View />
@@ -58,6 +61,7 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
             </View>
         </View>
     );
+
 };
 
 const mapDispatchToProps = dispatch => {

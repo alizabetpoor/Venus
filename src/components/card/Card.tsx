@@ -38,19 +38,14 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
   const {theme} = useContext(ThemeContext);
 
   const toggleCard = (): void => {
-    console.log('toggleCard');
+    console.log('toggleCard', isActive, animationDuration - 100);
 
-    if (isActive == true) {
-      //close dropdown
-      CloseCardAnimation();
-      setTimeout(() => {
-        setIsActive(!isActive);
-      }, animationDuration - 100);
-    } else {
-      // open dropdown
-      setIsActive(!isActive);
-      OpenCardAnimation();
-    }
+    setTimeout(async () => {
+      await setIsActive((state: boolean) => !state);
+      isActive && (await CloseCardAnimation());
+      !isActive && (await OpenCardAnimation());
+      console.log('setTimeOut', isActive);
+    }, 500);
   };
   const evilIconConstructor = (
     name: string,
@@ -95,7 +90,7 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
           // if the item should be removed, animate it off the screen first
           offset.value = withTiming(0);
           console.log('should show extra detail');
-          setIsActive(!isActive);
+          runOnJS(toggleCard)();
           // then trigger the remove mood item with a small delay
         } else {
           // otherwise, animate the item back to the start
