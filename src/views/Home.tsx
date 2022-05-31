@@ -34,6 +34,7 @@ const useRefetchHook = ({refetchFunction, dependencies}: refetchHookTypes) => {
 const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
   const [fetch, setFetch] = useState(0);
   const [oldUsers, setOldUsers] = useState([]);
+  const [openCardId, setOpenCardId] = useState('');
   const [mainTheme, setMainTheme] = useState('');
   const {theme} = useContext(ThemeContext);
   React.useEffect(() => {
@@ -46,6 +47,10 @@ const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
     };
     getDataFromStorage();
   }, []);
+
+  const toggleOff = uuid => {
+    setOpenCardId(uuid);
+  };
 
   useEffect(() => {
     setAppData({theme: mainTheme});
@@ -69,10 +74,18 @@ const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
         {!loading ? (
           <FlatList
             data={users}
-            renderItem={obj => <Card userDetail={obj.item} />}
+            renderItem={obj => (
+              <Card
+                userDetail={obj.item}
+                isActive={openCardId == obj.item.login.uuid ? true : false}
+                {...obj}
+                toggleOff={toggleOff}
+              />
+            )}
             contentContainerStyle={{paddingBottom: 200}}
-            keyExtractor={(item: any, key: number) => key}
             onEndReached={() => setFetch((state: number) => state + 1)}
+            keyExtractor={(item: any) => item.login.uuid}
+            extraData={openCardId}
           />
         ) : (
           <ActivityIndicator />

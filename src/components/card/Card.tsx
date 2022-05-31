@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useContext, useRef} from 'react';
 
 import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
@@ -6,19 +6,6 @@ import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
 import CardDetail from './CardDetail';
 import {AnimationContext} from './AnimationProvider.js';
-import {
-  PanGestureHandler,
-  PanGestureHandlerGestureEvent,
-} from 'react-native-gesture-handler';
-import {
-  runOnJS,
-  useAnimatedGestureHandler,
-  withTiming,
-} from 'react-native-reanimated';
-import Reanimated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
 
 type cardInfoProps = {
   userDetail: {
@@ -26,24 +13,37 @@ type cardInfoProps = {
   };
 };
 
-const Card: React.FC<cardInfoProps> = ({userDetail}) => {
-  const {
-    interpolatedIcon,
-    OpenCardAnimation,
-    CloseCardAnimation,
-    animationDuration,
-  } = useContext(AnimationContext);
-
-  const [isActive, setIsActive] = useState<boolean>(false);
+const Card: React.FC<cardInfoProps> = ({
+  userDetail,
+  index,
+  isActive,
+  toggleOff,
+}) => {
+  const {OpenCardAnimation, CloseCardAnimation, animationDuration} =
+    useContext(AnimationContext);
+  const animatedHeight = useRef(new Animated.Value(0)).current;
+  const animatedIcon = useRef(new Animated.Value(0)).current;
   const {theme} = useContext(ThemeContext);
 
   const toggleCard = (): void => {
-    setTimeout(async () => {
-      await setIsActive((state: boolean) => !state);
-      isActive && (await CloseCardAnimation());
-      !isActive && (await OpenCardAnimation());
-    }, 500);
+    if (isActive == true) {
+      //close dropdown
+      CloseCardAnimation(animatedIcon, animatedHeight);
+      setTimeout(() => {
+        toggleOff('');
+      }, animationDuration - 100);
+    } else {
+      // open dropdown
+      OpenCardAnimation(animatedIcon, animatedHeight);
+      toggleOff(userDetail.login.uuid);
+    }
   };
+
+  const interpolatedIcon = animatedIcon.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0deg', '90deg'],
+  });
+
   const evilIconConstructor = (
     name: string,
     size: number,
@@ -56,88 +56,53 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
     20,
     theme.colors.text_icon,
   );
+  const bottomIcon = evilIconConstructor(
+    'chevron-down',
+    30,
+    theme.colors.text_icon,
+  );
   const rightIcon = evilIconConstructor(
     'chevron-right',
     30,
     theme.colors.text_icon,
   );
-  const offset = useSharedValue(0);
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{translateX: offset.value}],
-  }));
-
-  const onGestureEvent = useAnimatedGestureHandler<
-    PanGestureHandlerGestureEvent,
-    {shouldShowExtraDetail: boolean}
-  >(
-    {
-      onActive: (event, ctx) => {
-        const xVal = Math.floor(event.translationX);
-        offset.value = xVal;
-
-        if (Math.abs(xVal) <= 40) {
-          ctx.shouldShowExtraDetail = false;
-        } else {
-          ctx.shouldShowExtraDetail = true;
-        }
-      },
-      onEnd: (_, ctx) => {
-        if (ctx.shouldShowExtraDetail) {
-          offset.value = withTiming(0);
-          runOnJS(toggleCard)();
-        } else {
-          offset.value = withTiming(0);
-        }
-      },
-    },
-    [],
-  );
-
   return (
-    <PanGestureHandler
-      minDeltaX={1}
-      minDeltaY={100}
-      onGestureEvent={onGestureEvent}>
-      <Reanimated.View
-        style={[
-          styles.card,
-          {backgroundColor: theme.colors.background_1},
-          animatedStyle,
-        ]}>
-        <TouchableOpacity
-          activeOpacity={0.6}
-          style={[styles.info]}
-          onPress={() => toggleCard()}>
-          <View style={[styles.leftContainer]}>
-            <Image
-              style={[styles.photo]}
-              resizeMode="contain"
-              source={{
-                uri: userDetail?.picture?.large,
-              }}
-            />
-            <View style={[styles.userinfo]}>
-              <Text style={[styles.name, {color: theme.colors.text}]}>
-                {userDetail?.name?.first + ' ' + userDetail?.name?.last}
-              </Text>
-              <Text style={[styles.username, {color: theme.colors?.text}]}>
-                {userDetail?.login?.username}
-              </Text>
-            </View>
-          </View>
-          <View style={[styles.rightContainer]}>
-            {locationIcon}
-            <Text style={[styles.country, {color: theme.colors.text_icon}]}>
-              {userDetail?.location?.country}
+    <View
+      key={index}
+      style={[styles.card, {backgroundColor: theme.colors.background_1}]}>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        style={[styles.info]}
+        onPress={() => toggleCard()}>
+        <View style={[styles.leftContainer]}>
+          <Image
+            style={[styles.photo]}
+            resizeMode="contain"
+            source={{
+              uri: userDetail.picture.large,
+            }}
+          />
+          <View style={[styles.userinfo]}>
+            <Text style={[styles.name, {color: theme.colors.text}]}>
+              {userDetail.name.first + ' ' + userDetail.name.last}{' '}
             </Text>
-            <Animated.View style={[{transform: [{rotate: interpolatedIcon}]}]}>
-              {rightIcon}
-            </Animated.View>
+            <Text style={[styles.username, {color: theme.colors.text}]}>
+              @{userDetail.login.username}
+            </Text>
           </View>
-        </TouchableOpacity>
-        {isActive && <CardDetail userDetail={userDetail} />}
-      </Reanimated.View>
-    </PanGestureHandler>
+        </View>
+        <View style={[styles.rightContainer]}>
+          {locationIcon}
+          <Text style={[styles.country, {color: theme.colors.text_icon}]}>
+            {userDetail.location.country}
+          </Text>
+          {!isActive ? rightIcon : bottomIcon}
+        </View>
+      </TouchableOpacity>
+      {isActive && (
+        <CardDetail userDetail={userDetail} animatedHeight={animatedHeight} />
+      )}
+    </View>
   );
 };
 

@@ -29,7 +29,10 @@ export default StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginRight: -14,
+    maxWidth: '42%',
+    minWidth: '40%',
   },
   userinfo: {
     paddingLeft: 10,

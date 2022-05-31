@@ -9,10 +9,18 @@ type detailInfoProps = {
   userDetail: {
     [key: string]: any;
   };
+  animatedHeight: any;
 };
-const CardDetail: React.FC<detailInfoProps> = ({userDetail}) => {
+const CardDetail: React.FC<detailInfoProps> = ({
+  userDetail,
+  animatedHeight,
+}) => {
+  const interpolatedHeight = animatedHeight.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'],
+  });
   const {theme} = useContext(ThemeContext);
-  const {interpolatedHeight} = useContext(AnimationContext);
+  // const {interpolatedHeight} = useContext(AnimationContext);
   const phoneIcon = (
     <FeatherIcon name="phone" size={20} color={theme.colors.text_icon} />
   );
