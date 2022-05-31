@@ -35,7 +35,6 @@ const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
   const [oldUsers, setOldUsers] = useState([]);
   const [openCardId, setOpenCardId] = useState('');
   const [mainTheme, setMainTheme] = useState('');
-  const [openCardId, setOpenCardId] = useState('');
   const {theme} = useContext(ThemeContext);
   React.useEffect(() => {
     const getDataFromStorage = async () => {
@@ -80,7 +79,7 @@ const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
                 toggleOff={toggleOff}
               />
             )}
-            contentContainerStyle={{paddingBottom: 150}}    
+            contentContainerStyle={{paddingBottom: 150}}
             onEndReached={() => setFetch((state: number) => state + 1)}
             keyExtractor={(item: any) => item.login.uuid}
             extraData={openCardId}
