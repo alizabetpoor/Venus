@@ -9,14 +9,31 @@ import {getAppData, setAppData} from '../utils/AsyncStorage';
 import {useEffect} from 'react';
 import {useContext} from 'react';
 import {ThemeContext} from '../themes/ThemeProvider.js';
+import {refetchUsers} from '../store/reducer/getUsersReducer';
+import {useCallback} from 'react';
+import {useMemo} from 'react';
+import {ActivityIndicator} from 'react-native';
 
 type testProps = {
   getUsers: (usersNumber: number) => void;
   loading: boolean;
   users: [];
+  refetch: () => void;
+};
+type refetchHookTypes = {
+  refetchFunction: () => void;
+  dependencies: any[];
+};
+const useRefetchHook = ({refetchFunction, dependencies}: refetchHookTypes) => {
+  return useEffect(() => {
+    refetchFunction();
+  }, [dependencies, refetchFunction]);
 };
 
-const Home: FC = ({getUsers, loading, users}: testProps) => {
+const Home: FC = ({getUsers, loading, users, refetch}: testProps) => {
+  const [fetch, setFetch] = useState(0);
+  const [oldUsers, setOldUsers] = useState([]);
+  const [openCardId, setOpenCardId] = useState('');
   const [mainTheme, setMainTheme] = useState('');
   const [openCardId, setOpenCardId] = useState('');
   const {theme} = useContext(ThemeContext);
@@ -26,7 +43,6 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
 
       if (data) {
         setMainTheme(data.theme);
-        console.log('data from storage', data);
       }
     };
     getDataFromStorage();
@@ -39,9 +55,12 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
   }, [mainTheme]);
 
   useEffect(() => {
-    getUsers(15);
-  }, []);
-
+    function firstRender() {
+      getUsers();
+      console.log('first render', users.length, fetch);
+    }
+    firstRender();
+  }, [fetch]);
   return (
     <View style={[Styles.layout, {backgroundColor: theme.colors.background_2}]}>
       <View />
@@ -50,9 +69,9 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
         <Text style={[Styles.title, {color: theme.colors.text}]}>Users</Text>
       </View>
       <View>
-        {!loading && (
+        {!loading ? (
           <FlatList
-            data={users.results}
+            data={users}
             renderItem={obj => (
               <Card
                 userDetail={obj.item}
@@ -61,10 +80,13 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
                 toggleOff={toggleOff}
               />
             )}
-            contentContainerStyle={{paddingBottom: 150}}
+            contentContainerStyle={{paddingBottom: 150}}    
+            onEndReached={() => setFetch((state: number) => state + 1)}
             keyExtractor={(item: any) => item.login.uuid}
             extraData={openCardId}
           />
+        ) : (
+          <ActivityIndicator />
         )}
       </View>
     </View>
@@ -73,8 +95,11 @@ const Home: FC = ({getUsers, loading, users}: testProps) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUsers: (usersNumber: number) => {
-      dispatch(getUsersThunk(usersNumber));
+    getUsers: () => {
+      dispatch(getUsersThunk());
+    },
+    refetch: () => {
+      dispatch(refetchUsers());
     },
   };
 };
