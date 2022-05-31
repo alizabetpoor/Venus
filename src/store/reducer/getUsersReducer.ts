@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {getUsersThunk} from '../../services/ApiService';
 
 export type UsersState = {
-  users: [];
+  users: any[];
   loading: boolean;
   error: boolean;
   needToReFetch: boolean;
@@ -27,7 +27,8 @@ export const getUsersSlice = createSlice({
       state.needToReFetch = false;
     });
     builder.addCase(getUsersThunk.fulfilled, (state, action) => {
-      state.users = action.payload;
+      const length = state.users.length;
+      state.users[length - 1] = action.payload;
       state.loading = false;
     });
     builder.addCase(getUsersThunk.rejected, (state, action) => {
