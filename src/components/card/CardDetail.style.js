@@ -14,12 +14,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 15,
     justifyContent: 'flex-start',
-    paddingVertical: 14,
+    paddingVertical: 10,
   },
   detailElementText: {
+    fontSize: 11,
     paddingLeft: 9,
-  },
-  homeText: {
-    width: '80%',
   },
 });

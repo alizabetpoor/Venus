@@ -7,10 +7,9 @@ internship course.
 
 ## Tech Stack
 
-- React Native
-- TypeScript
-- Redux
-
+- [React Native](https://reactnative.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Redux](https://redux.js.org/)
 
 ## Run Locally
 

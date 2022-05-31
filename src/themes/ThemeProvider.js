@@ -1,16 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {LightTheme, DarkTheme} from './themes';
 
 const initialState = {
   dark: false,
   theme: LightTheme,
-  toggle: () => {},
+  themeToggle: () => {},
 };
 const ThemeContext = React.createContext(initialState);
 const ThemeProvider = ({children}) => {
   const [dark, setDark] = React.useState(false); // set default theme to light
   // Toggle theme between dark and light
-  const toggle = () => {
+  const themeToggle = () => {
     setDark(!dark);
   };
 
@@ -18,7 +18,7 @@ const ThemeProvider = ({children}) => {
   const theme = dark ? DarkTheme : LightTheme;
 
   return (
-    <ThemeContext.Provider value={{theme, dark, toggle}}>
+    <ThemeContext.Provider value={{theme, dark, themeToggle}}>
       {children}
     </ThemeContext.Provider>
   );
