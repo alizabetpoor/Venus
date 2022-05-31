@@ -1,11 +1,9 @@
 import {Animated} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 const AnimationContext = React.createContext();
 const AnimationProvider = ({children}) => {
-  const [animatedHeight, setAnimatedHeight] = useState(new Animated.Value(0));
-  const [animatedIcon, setAnimatedIcon] = useState(new Animated.Value(0));
   const animationDuration = 400;
-  const CloseCardAnimation = () => {
+  const CloseCardAnimation = (animatedIcon, animatedHeight) => {
     Animated.timing(animatedHeight, {
       toValue: 0,
       useNativeDriver: false,
@@ -18,7 +16,7 @@ const AnimationProvider = ({children}) => {
     }).start();
   };
 
-  const OpenCardAnimation = () => {
+  const OpenCardAnimation = (animatedIcon, animatedHeight) => {
     Animated.timing(animatedHeight, {
       toValue: 100,
       useNativeDriver: false,
@@ -31,20 +29,9 @@ const AnimationProvider = ({children}) => {
     }).start();
   };
 
-  const interpolatedIcon = animatedIcon.interpolate({
-    inputRange: [0, 100],
-    outputRange: ['0deg', '90deg'],
-  });
-  const interpolatedHeight = animatedHeight.interpolate({
-    inputRange: [0, 100],
-    outputRange: ['0%', '100%'],
-  });
-
   return (
     <AnimationContext.Provider
       value={{
-        interpolatedHeight,
-        interpolatedIcon,
         OpenCardAnimation,
         CloseCardAnimation,
         animationDuration,

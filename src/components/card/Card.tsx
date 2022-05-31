@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 
 import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
@@ -13,30 +13,34 @@ type cardInfoProps = {
   };
 };
 
-const Card: React.FC<cardInfoProps> = ({userDetail}) => {
-  const {
-    interpolatedIcon,
-    OpenCardAnimation,
-    CloseCardAnimation,
-    animationDuration,
-  } = useContext(AnimationContext);
-
+const Card: React.FC<cardInfoProps> = ({userDetail, index}) => {
+  const {OpenCardAnimation, CloseCardAnimation, animationDuration} =
+    useContext(AnimationContext);
+  // const ref = useRef(null);
+  const animatedHeight = useRef(new Animated.Value(0)).current;
+  const animatedIcon = useRef(new Animated.Value(0)).current;
   const [isActive, setIsActive] = useState<boolean>(false);
   const {theme} = useContext(ThemeContext);
 
   const toggleCard = (): void => {
     if (isActive == true) {
       //close dropdown
-      CloseCardAnimation();
+      CloseCardAnimation(animatedIcon, animatedHeight);
       setTimeout(() => {
         setIsActive(!isActive);
       }, animationDuration - 100);
     } else {
       // open dropdown
       setIsActive(!isActive);
-      OpenCardAnimation();
+      OpenCardAnimation(animatedIcon, animatedHeight);
     }
   };
+
+  const interpolatedIcon = animatedIcon.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0deg', '90deg'],
+  });
+
   const evilIconConstructor = (
     name: string,
     size: number,
@@ -55,7 +59,9 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
     theme.colors.text_icon,
   );
   return (
-    <View style={[styles.card, {backgroundColor: theme.colors.background_1}]}>
+    <View
+      key={index}
+      style={[styles.card, {backgroundColor: theme.colors.background_1}]}>
       <TouchableOpacity
         activeOpacity={0.6}
         style={[styles.info]}
@@ -87,7 +93,9 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
           </Animated.View>
         </View>
       </TouchableOpacity>
-      {isActive && <CardDetail userDetail={userDetail} />}
+      {isActive && (
+        <CardDetail userDetail={userDetail} animatedHeight={animatedHeight} />
+      )}
     </View>
   );
 };
