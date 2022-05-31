@@ -126,7 +126,7 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
             />
             <View style={[styles.userinfo]}>
               <Text style={[styles.name, {color: theme.colors.text}]}>
-                {userDetail.first + ' ' + userDetail.last}
+                {userDetail.name.first + ' ' + userDetail.name.last}
               </Text>
               <Text style={[styles.username, {color: theme.colors.text}]}>
                 {userDetail.login.username}
