@@ -19,6 +19,7 @@ export const getUsersSlice = createSlice({
   reducers: {
     refetchUsers: state => {
       state.needToReFetch = true;
+      getUsersThunk();
     },
   },
   extraReducers: builder => {
@@ -27,8 +28,7 @@ export const getUsersSlice = createSlice({
       state.needToReFetch = false;
     });
     builder.addCase(getUsersThunk.fulfilled, (state, action) => {
-      const length = state.users.length;
-      state.users[length - 1] = action.payload;
+      state.users = [...state.users, ...action.payload.results];
       state.loading = false;
     });
     builder.addCase(getUsersThunk.rejected, (state, action) => {

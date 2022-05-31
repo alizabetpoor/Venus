@@ -38,13 +38,10 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
   const {theme} = useContext(ThemeContext);
 
   const toggleCard = (): void => {
-    console.log('toggleCard', isActive, animationDuration - 100);
-
     setTimeout(async () => {
       await setIsActive((state: boolean) => !state);
       isActive && (await CloseCardAnimation());
       !isActive && (await OpenCardAnimation());
-      console.log('setTimeOut', isActive);
     }, 500);
   };
   const evilIconConstructor = (
@@ -78,7 +75,6 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
         const xVal = Math.floor(event.translationX);
         offset.value = xVal;
 
-        // use Absolute value so the user could swipe either left or right
         if (Math.abs(xVal) <= 40) {
           ctx.shouldShowExtraDetail = false;
         } else {
@@ -87,13 +83,9 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
       },
       onEnd: (_, ctx) => {
         if (ctx.shouldShowExtraDetail) {
-          // if the item should be removed, animate it off the screen first
           offset.value = withTiming(0);
-          console.log('should show extra detail');
           runOnJS(toggleCard)();
-          // then trigger the remove mood item with a small delay
         } else {
-          // otherwise, animate the item back to the start
           offset.value = withTiming(0);
         }
       },
@@ -121,22 +113,22 @@ const Card: React.FC<cardInfoProps> = ({userDetail}) => {
               style={[styles.photo]}
               resizeMode="contain"
               source={{
-                uri: userDetail.picture.large,
+                uri: userDetail?.picture?.large,
               }}
             />
             <View style={[styles.userinfo]}>
               <Text style={[styles.name, {color: theme.colors.text}]}>
-                {userDetail.name.first + ' ' + userDetail.name.last}
+                {userDetail?.name?.first + ' ' + userDetail?.name?.last}
               </Text>
-              <Text style={[styles.username, {color: theme.colors.text}]}>
-                {userDetail.login.username}
+              <Text style={[styles.username, {color: theme.colors?.text}]}>
+                {userDetail?.login?.username}
               </Text>
             </View>
           </View>
           <View style={[styles.rightContainer]}>
             {locationIcon}
             <Text style={[styles.country, {color: theme.colors.text_icon}]}>
-              {userDetail.location.country}
+              {userDetail?.location?.country}
             </Text>
             <Animated.View style={[{transform: [{rotate: interpolatedIcon}]}]}>
               {rightIcon}
