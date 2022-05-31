@@ -11,71 +11,68 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {useContext} from 'react';
 import {ThemeContext} from '../themes/ThemeProvider.js';
 
-
 type testProps = {
-    getUsers: (usersNumber: number) => void;
-    loading: boolean;
-    users: [];
+  getUsers: (usersNumber: number) => void;
+  loading: boolean;
+  users: [];
 };
 
 const Home: FC = ({getUsers, loading, users}: testProps) => {
-    const [mainTheme, setMainTheme] = useState('');
-    const {theme} = useContext(ThemeContext);
-    React.useEffect(() => {
-        const getDataFromStorage = async () => {
-            const data = await getAppData();
+  const [mainTheme, setMainTheme] = useState('');
+  const {theme} = useContext(ThemeContext);
+  React.useEffect(() => {
+    const getDataFromStorage = async () => {
+      const data = await getAppData();
 
-            if (data) {
-                setMainTheme(data.theme);
-                console.log('data from storage', data);
-            }
-        };
-        getDataFromStorage();
-    }, []);
+      if (data) {
+        setMainTheme(data.theme);
+        console.log('data from storage', data);
+      }
+    };
+    getDataFromStorage();
+  }, []);
 
-    useEffect(() => {
-        setAppData({theme: mainTheme});
-    }, [mainTheme]);
+  useEffect(() => {
+    setAppData({theme: mainTheme});
+  }, [mainTheme]);
 
-    useEffect(() => {
-        getUsers(15);
-    }, []);
+  useEffect(() => {
+    getUsers(15);
+  }, []);
 
-
-    return (
+  return (
     <View style={[Styles.layout, {backgroundColor: theme.colors.background_2}]}>
       <View />
-            <SearchInput />
-            <View>
+      <SearchInput />
+      <View>
         <Text style={[Styles.title, {color: theme.colors.text}]}>Users</Text>
-            </View>
-            <View>
-                {!loading && (
-                    <FlatList
-                        data={users.results}
-                        renderItem={obj => <Card userDetail={obj.item} />}
-                        contentContainerStyle={{paddingBottom: 200}}
-                        keyExtractor={(item: any, key: number) => key}
-                    />
-                )}
-            </View>
-        </View>
-    );
-
+      </View>
+      <View>
+        {!loading && (
+          <FlatList
+            data={users}
+            renderItem={obj => <Card userDetail={obj.item} />}
+            contentContainerStyle={{paddingBottom: 200}}
+            keyExtractor={(item: any, key: number) => key}
+          />
+        )}
+      </View>
+    </View>
+  );
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-        getUsers: (usersNumber: number) => {
-            dispatch(getUsersThunk(usersNumber));
-        },
-    };
+  return {
+    getUsers: (usersNumber: number) => {
+      dispatch(getUsersThunk(usersNumber));
+    },
+  };
 };
 const mapStateToProps = state => {
-    return {
-        loading: state.loading,
-        users: state.users,
-    };
+  return {
+    loading: state.loading,
+    users: state.users,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
