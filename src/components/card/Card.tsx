@@ -1,4 +1,5 @@
 import React, {useContext, useRef} from 'react';
+
 import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
@@ -12,7 +13,6 @@ type cardInfoProps = {
   };
 };
 
-
 const Card: React.FC<cardInfoProps> = ({
   userDetail,
   index,
@@ -21,13 +21,6 @@ const Card: React.FC<cardInfoProps> = ({
 }) => {
   const {OpenCardAnimation, CloseCardAnimation, animationDuration} =
     useContext(AnimationContext);
-  const animatedHeight = useRef(new Animated.Value(0)).current;
-  const animatedIcon = useRef(new Animated.Value(0)).current;
-
-const Card: React.FC<cardInfoProps> = ({userDetail, index}) => {
-  const {OpenCardAnimation, CloseCardAnimation, animationDuration} =
-    useContext(AnimationContext);
-  // const ref = useRef(null);
   const animatedHeight = useRef(new Animated.Value(0)).current;
   const animatedIcon = useRef(new Animated.Value(0)).current;
   const {theme} = useContext(ThemeContext);
@@ -104,7 +97,6 @@ const Card: React.FC<cardInfoProps> = ({userDetail, index}) => {
             {userDetail.location.country}
           </Text>
           {!isActive ? rightIcon : bottomIcon}
-
         </View>
       </TouchableOpacity>
       {isActive && (
