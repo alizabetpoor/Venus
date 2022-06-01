@@ -1,7 +1,5 @@
-import React from 'react';
-import {useContext} from 'react';
-import {Pressable} from 'react-native';
-import {View, TextInput, TouchableOpacity} from 'react-native';
+import React, {useContext} from 'react';
+import {View, TextInput, TouchableOpacity, Pressable} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
 import styles from './SearchInput.style.js';
@@ -51,7 +49,6 @@ const SearchInput: React.FC = ({
           maxLength={30}
           onChangeText={(searchInput: any) => {
             SearchUsers({searchInput, users, setSearchResult});
-            console.log(searchInput);
           }}
         />
         <TouchableOpacity activeOpacity={0.6}>{searchIcon}</TouchableOpacity>
