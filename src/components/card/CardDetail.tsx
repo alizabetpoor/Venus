@@ -4,7 +4,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import OctIcons from 'react-native-vector-icons/Octicons';
 import styles from './CardDetail.style.js';
 import {ThemeContext} from '../../themes/ThemeProvider';
-import {AnimationContext} from './AnimationProvider.js';
+
 type detailInfoProps = {
   userDetail: {
     [key: string]: any;
@@ -20,7 +20,6 @@ const CardDetail: React.FC<detailInfoProps> = ({
     outputRange: ['0%', '100%'],
   });
   const {theme} = useContext(ThemeContext);
-  // const {interpolatedHeight} = useContext(AnimationContext);
   const phoneIcon = (
     <FeatherIcon name="phone" size={20} color={theme.colors.text_icon} />
   );
