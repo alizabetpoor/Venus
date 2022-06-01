@@ -5,8 +5,25 @@ import {View, TextInput, TouchableOpacity} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
 import styles from './SearchInput.style.js';
+import {
+  setSearchInput,
+  setSearchResults,
+} from '../../store/reducer/searchInputReducer';
+import {connect} from 'react-redux';
+import SearchUsers from '../../utils/SearchUsers';
 
-const SearchInput: React.FC = () => {
+type Props = {
+  setSearchValue: (value: string) => void;
+  setSearchIsActive: (value: boolean) => void;
+  setSearchResult: (searchResults: any) => void;
+  users: any;
+};
+const SearchInput: React.FC = ({
+  setSearchValue,
+  setSearchIsActive,
+  setSearchResult,
+  users,
+}: Props) => {
   const {themeToggle, dark, theme} = useContext(ThemeContext);
 
   const fatherIconConstructor = (
@@ -32,6 +49,10 @@ const SearchInput: React.FC = () => {
           placeholderTextColor={theme.colors.gray}
           placeholder="search users ..."
           maxLength={30}
+          onChangeText={(searchInput: any) => {
+            SearchUsers({searchInput, users, setSearchResult});
+            console.log(searchInput);
+          }}
         />
         <TouchableOpacity activeOpacity={0.6}>{searchIcon}</TouchableOpacity>
       </View>
@@ -48,5 +69,23 @@ const SearchInput: React.FC = () => {
     </View>
   );
 };
+const mapStateToProps = (state: any) => {
+  return {
+    searchInput: state.searchInput.searchInput,
+    users: state.user.users,
+  };
+};
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setSearchValue: (value: string) => {
+      dispatch(setSearchInput(value));
+    },
+    setSearchIsActive: (value: boolean) => {
+      dispatch(setSearchInput(value));
+    },
+    setSearchResult: (searchResults: any) =>
+      dispatch(setSearchResults(searchResults)),
+  };
+};
 
-export default SearchInput;
+export default connect(mapStateToProps, mapDispatchToProps)(SearchInput);
