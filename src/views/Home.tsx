@@ -1,16 +1,13 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useState, createRef} from 'react';
+import {View, Text, FlatList, ActivityIndicator} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
 import Styles from './Home.style.js';
 import SearchInput from '../components/searchInput/SearchInput';
 import Card from '../components/card/Card';
 import {connect} from 'react-redux';
 import {getUsersThunk} from '../services/ApiService';
 import {getAppData, setAppData} from '../utils/AsyncStorage';
-import {useEffect} from 'react';
-import {useContext} from 'react';
 import {ThemeContext} from '../themes/ThemeProvider.js';
 import {refetchUsers} from '../store/reducer/getUsersReducer';
-import {ActivityIndicator} from 'react-native';
 
 type testProps = {
   getUsers: (usersNumber: number) => void;
@@ -48,7 +45,6 @@ const Home: FC = ({getUsers, loading, users, searchResults}: testProps) => {
     }
     firstRender();
   }, [fetch]);
-  console.log('render', loading, users?.length);
 
   return (
     <View style={[Styles.layout, {backgroundColor: theme.colors.background_2}]}>
