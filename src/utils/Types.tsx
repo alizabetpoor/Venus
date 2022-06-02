@@ -17,6 +17,7 @@ export type homeProps = {
   users: [];
   refetch: () => void;
   searchResults: any[];
+  searchInput: string;
 };
 export type LabelProps = {
   text?: string;
