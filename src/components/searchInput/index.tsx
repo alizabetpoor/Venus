@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo, useState, useEffect} from 'react';
 import {View, TextInput, TouchableOpacity, Pressable} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
@@ -8,7 +8,6 @@ import {
   setSearchResults,
 } from '../../store/reducer/searchInputReducer';
 import {connect} from 'react-redux';
-import SearchUsers from '../../utils/SearchUsers';
 
 type Props = {
   setSearchValue: (value: string) => void;
@@ -31,10 +30,28 @@ const SearchInput: React.FC = ({
   ): React.ReactNode => {
     return <FeatherIcon name={name} size={size} color={color} />;
   };
+  const [searchText, setSearchText] = useState('');
   const searchIcon = fatherIconConstructor('search', 20, theme.colors.gray);
   const sunIcon = fatherIconConstructor('sun', 20, theme.colors.gray);
   const moonIcon = fatherIconConstructor('moon', 20, theme.colors.gray);
+  const filterUsers = useMemo(() => {
+    if (searchText !== '') {
+      const filteredUsers = users.filter(
+        (user: any) =>
+          user.name.first.includes(searchText) ||
+          user.name.last.includes(searchText),
+      );
+      console.log(filteredUsers, 'filteredusers');
 
+      return filteredUsers;
+    } else {
+      return [];
+    }
+  }, [users, searchText]);
+  useEffect(() => {
+    const newUsers = filterUsers;
+    setSearchResult(newUsers);
+  }, [searchText]);
   return (
     <View style={styles.headerBox}>
       <View
@@ -48,7 +65,7 @@ const SearchInput: React.FC = ({
           placeholder="search users ..."
           maxLength={30}
           onChangeText={(searchInput: any) => {
-            SearchUsers({searchInput, users, setSearchResult});
+            setSearchText(searchInput);
           }}
         />
         <TouchableOpacity activeOpacity={0.6}>{searchIcon}</TouchableOpacity>
