@@ -41,6 +41,7 @@ export default StyleSheet.create({
   },
   name: {
     fontSize: 14,
+    textAlign: 'left',
     fontWeight: '600',
   },
   username: {
