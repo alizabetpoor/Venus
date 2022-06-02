@@ -60,7 +60,11 @@ const Home: React.FC = ({
           />
         )}
         contentContainerStyle={{paddingBottom: 170}}
-        onEndReached={() => setFetch((state: number) => state + 1)}
+        onEndReached={() => {
+          if (searchResults.length == 0) {
+            setFetch((state: number) => state + 1);
+          }
+        }}
         keyExtractor={(item: any) => item.login.uuid}
         extraData={openCardId}
         ListEmptyComponent={() =>
