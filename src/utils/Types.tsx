@@ -35,4 +35,5 @@ export type SearchInputProps = {
   setSearchIsActive: (value: boolean) => void;
   setSearchResult: (searchResults: any) => void;
   users: any;
+  searchInput: string;
 };

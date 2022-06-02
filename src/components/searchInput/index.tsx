@@ -12,34 +12,30 @@ import {connect} from 'react-redux';
 
 const SearchInput: React.FC = ({
   setSearchValue,
-  setSearchIsActive,
   setSearchResult,
   users,
+  searchInput,
 }: SearchInputProps) => {
   const {themeToggle, dark, theme} = useContext(ThemeContext);
 
-  const [searchText, setSearchText] = useState('');
   const searchIcon = featherIconConstructor('search', 20, theme.colors.gray);
   const sunIcon = featherIconConstructor('sun', 20, theme.colors.gray);
   const moonIcon = featherIconConstructor('moon', 20, theme.colors.gray);
   const filterUsers = useMemo(() => {
-    if (searchText !== '') {
-      const filteredUsers = users.filter(
-        (user: any) =>
-          user.name.first.toLowerCase().includes(searchText.toLowerCase()) ||
-          user.name.last.toLowerCase().includes(searchText.toLowerCase()),
-      );
-      console.log(filteredUsers, 'filteredusers');
-
+    if (searchInput !== '') {
+      const filteredUsers = users.filter((user: any) => {
+        const fullName = user.name.first + ' ' + user.name.last;
+        return fullName.toLowerCase().includes(searchInput.toLowerCase());
+      });
       return filteredUsers;
     } else {
       return [];
     }
-  }, [users, searchText]);
+  }, [users, searchInput]);
   useEffect(() => {
     const newUsers = filterUsers;
     setSearchResult(newUsers);
-  }, [searchText]);
+  }, [searchInput, filterUsers, setSearchResult]);
   return (
     <View style={styles.headerBox}>
       <View
@@ -53,7 +49,7 @@ const SearchInput: React.FC = ({
           placeholder="search users ..."
           maxLength={30}
           onChangeText={(searchInput: any) => {
-            setSearchText(searchInput);
+            setSearchValue(searchInput);
           }}
         />
         <TouchableOpacity activeOpacity={0.6}>{searchIcon}</TouchableOpacity>
@@ -80,9 +76,6 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     setSearchValue: (value: string) => {
-      dispatch(setSearchInput(value));
-    },
-    setSearchIsActive: (value: boolean) => {
       dispatch(setSearchInput(value));
     },
     setSearchResult: (searchResults: any) =>
