@@ -29,3 +29,9 @@ export type LabelProps = {
   isIcon?: boolean;
   isText?: boolean;
 };
+export type SearchInputProps = {
+  setSearchValue: (value: string) => void;
+  setSearchIsActive: (value: boolean) => void;
+  setSearchResult: (searchResults: any) => void;
+  users: any;
+};
