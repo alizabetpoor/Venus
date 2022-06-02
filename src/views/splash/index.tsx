@@ -7,7 +7,7 @@ const Splash = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <LottieView
-        source={require('../assets/splash.json')}
+        source={require('../../assets/splash.json')}
         autoPlay
         loop={false}
         speed={1.3}

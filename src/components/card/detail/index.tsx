@@ -3,7 +3,7 @@ import {View, Text, Animated} from 'react-native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import OctIcons from 'react-native-vector-icons/Octicons';
 import styles from './CardDetail.style.js';
-import {ThemeContext} from '../../themes/ThemeProvider';
+import {ThemeContext} from '../../../themes/ThemeProvider';
 
 type detailInfoProps = {
   userDetail: {

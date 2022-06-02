@@ -9,7 +9,6 @@ type AppData = {
 export const getAppData = async (): Promise<AppData | null> => {
   try {
     const data = await AsyncStorage.getItem(storageKey);
-
     if (data) {
       return JSON.parse(data);
     }
