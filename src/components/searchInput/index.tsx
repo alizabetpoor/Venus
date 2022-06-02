@@ -1,40 +1,45 @@
-import React, {useContext} from 'react';
+import React, {useContext, useMemo, useState, useEffect} from 'react';
 import {View, TextInput, TouchableOpacity, Pressable} from 'react-native';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+import {featherIconConstructor} from '../../utils/Constants';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
 import styles from './SearchInput.style.js';
+import {SearchInputProps} from '../../utils/Types';
 import {
   setSearchInput,
   setSearchResults,
 } from '../../store/reducer/searchInputReducer';
 import {connect} from 'react-redux';
-import SearchUsers from '../../utils/SearchUsers';
 
-type Props = {
-  setSearchValue: (value: string) => void;
-  setSearchIsActive: (value: boolean) => void;
-  setSearchResult: (searchResults: any) => void;
-  users: any;
-};
 const SearchInput: React.FC = ({
   setSearchValue,
   setSearchIsActive,
   setSearchResult,
   users,
-}: Props) => {
+}: SearchInputProps) => {
   const {themeToggle, dark, theme} = useContext(ThemeContext);
 
-  const fatherIconConstructor = (
-    name: string,
-    size: number,
-    color: string,
-  ): React.ReactNode => {
-    return <FeatherIcon name={name} size={size} color={color} />;
-  };
-  const searchIcon = fatherIconConstructor('search', 20, theme.colors.gray);
-  const sunIcon = fatherIconConstructor('sun', 20, theme.colors.gray);
-  const moonIcon = fatherIconConstructor('moon', 20, theme.colors.gray);
+  const [searchText, setSearchText] = useState('');
+  const searchIcon = featherIconConstructor('search', 20, theme.colors.gray);
+  const sunIcon = featherIconConstructor('sun', 20, theme.colors.gray);
+  const moonIcon = featherIconConstructor('moon', 20, theme.colors.gray);
+  const filterUsers = useMemo(() => {
+    if (searchText !== '') {
+      const filteredUsers = users.filter(
+        (user: any) =>
+          user.name.first.toLowerCase().includes(searchText.toLowerCase()) ||
+          user.name.last.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      console.log(filteredUsers, 'filteredusers');
 
+      return filteredUsers;
+    } else {
+      return [];
+    }
+  }, [users, searchText]);
+  useEffect(() => {
+    const newUsers = filterUsers;
+    setSearchResult(newUsers);
+  }, [searchText]);
   return (
     <View style={styles.headerBox}>
       <View
@@ -48,7 +53,7 @@ const SearchInput: React.FC = ({
           placeholder="search users ..."
           maxLength={30}
           onChangeText={(searchInput: any) => {
-            SearchUsers({searchInput, users, setSearchResult});
+            setSearchText(searchInput);
           }}
         />
         <TouchableOpacity activeOpacity={0.6}>{searchIcon}</TouchableOpacity>
