@@ -1,5 +1,5 @@
 import React, {useContext, useRef, memo} from 'react';
-import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
+import {View, Text, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
 import CardDetail from './detail';

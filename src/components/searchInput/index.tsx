@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useState, useEffect} from 'react';
+import React, {useContext, useMemo, useEffect} from 'react';
 import {View, TextInput, TouchableOpacity, Pressable} from 'react-native';
 import {featherIconConstructor} from '../../utils/Constants';
 import {ThemeContext} from '../../themes/ThemeProvider.js';

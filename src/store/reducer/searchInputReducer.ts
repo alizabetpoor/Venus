@@ -1,10 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-
-export type SearchInputState = {
-  searchInput: string;
-  isSearchActive: boolean;
-  searchResults: any[];
-};
+import {SearchInputStateType} from '../../utils/Types';
 
 export const searchInputSlice = createSlice({
   name: 'searchInput',
@@ -12,7 +7,7 @@ export const searchInputSlice = createSlice({
     searchInput: '',
     isSearchActive: false,
     searchResults: [],
-  } as SearchInputState,
+  } as SearchInputStateType,
   reducers: {
     setSearchInput: (state, action) => {
       state.searchInput = action.payload;

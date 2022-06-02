@@ -37,3 +37,14 @@ export type SearchInputProps = {
   users: any;
   searchInput: string;
 };
+export type SearchInputStateType = {
+  searchInput: string;
+  isSearchActive: boolean;
+  searchResults: any[];
+};
+export type UsersStateType = {
+  users: any[];
+  loading: boolean;
+  error: boolean;
+  needToReFetch: boolean;
+};

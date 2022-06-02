@@ -1,7 +1,7 @@
 import React from 'react';
 import LottieView from 'lottie-react-native';
 import {View} from 'react-native';
-import {StyleSheet} from 'react-native';
+import {styles} from './splash.styles.js';
 
 const Splash = ({navigation}: any) => {
   return (
@@ -18,12 +18,5 @@ const Splash = ({navigation}: any) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-    padding: 0,
-  },
-});
 
 export default Splash;

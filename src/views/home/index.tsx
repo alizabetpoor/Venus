@@ -22,7 +22,7 @@ const Home: React.FC = ({
   const [mainTheme, setMainTheme] = useState('');
   const {theme} = useContext(ThemeContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const getDataFromStorage = async () => {
       const data = await getAppData();
       if (data) {
