@@ -1,13 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {getUsersThunk} from '../../services/ApiService';
+import {UsersStateType} from '../../utils/Types';
 
-export type UsersState = {
-  users: any[];
-  loading: boolean;
-  error: boolean;
-  needToReFetch: boolean;
-};
-const initialState: UsersState = {
+const initialState: UsersStateType = {
   users: [],
   loading: false,
   error: false,
