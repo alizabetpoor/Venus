@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from 'react';
+import React, {useContext, useRef, memo} from 'react';
 import {View, Text, Image, TouchableOpacity, Animated} from 'react-native';
 import styles from './Card.style.js';
 import {ThemeContext} from '../../themes/ThemeProvider.js';
@@ -97,4 +97,4 @@ const Card: React.FC<cardInfoProps> = ({
   );
 };
 
-export default Card;
+export default memo(Card);

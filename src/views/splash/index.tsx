@@ -12,7 +12,6 @@ const Splash = ({navigation}: any) => {
         loop={false}
         speed={1.3}
         onAnimationFinish={() => {
-          console.log('Animation Finished');
           navigation.navigate('Main');
         }}
       />
