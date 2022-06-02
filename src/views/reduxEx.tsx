@@ -1,9 +1,7 @@
-import React, {useEffect} from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, Text, View, StyleSheet, Pressable} from 'react-native';
 import {connect} from 'react-redux';
-import {getUsersThunk} from './../services/ApiService';
-import {Pressable} from 'react-native';
-import {StyleSheet} from 'react-native';
+import {getUsersThunk} from '../services/ApiService';
 import {getAppData, setAppData} from '../utils/AsyncStorage';
 
 type testProps = {
@@ -11,15 +9,15 @@ type testProps = {
   loading: boolean;
   users: [];
 };
-const Test = ({getUsers, loading, users}: testProps) => {
-  const [mainTheme, setMainTheme] = React.useState('');
-  React.useEffect(() => {
+const Test = ({getUsers, loading}: testProps) => {
+  const [mainTheme, setMainTheme] = useState('');
+
+  useEffect(() => {
     const getDataFromStorage = async () => {
       const data = await getAppData();
 
       if (data) {
         setMainTheme(data.theme);
-        console.log('data from storage', data);
       }
     };
     getDataFromStorage();

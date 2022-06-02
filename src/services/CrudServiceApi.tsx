@@ -1,5 +1,5 @@
 import api from './api';
 
-export const getUsers = (UsersNumber: number) => {
+export const getUsers = () => {
   return api.get('');
 };
