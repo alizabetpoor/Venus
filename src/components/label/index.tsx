@@ -1,17 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {LabelProps} from '../../utils/Types';
 
-type LabelProps = {
-  text?: string;
-  textStyle?: any;
-  icon?: any;
-  iconStyle?: any;
-  textWrapperStyle?: any;
-  iconWrapperStyle?: any;
-  labelStyle?: any;
-  isIcon?: boolean;
-  isText?: boolean;
-};
 const Label = ({
   text,
   textStyle,
