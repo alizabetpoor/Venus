@@ -1,12 +1,22 @@
 # Venus
 
-Venus is an Application developed with React Native as a team
+Venus is an Application developed with React Native on a team
 basis work for the [Malltina](https://malltina.com/)
 internship course.
 
-## preview
+This application displays random users from the following
+ API endpoint.
+ ```bash
+https://randomuser.me/api/?results=20
+```
+As you can see in the [Preview](#preview) section, 
+clicking on each user
+shows more information about that user.
+This app also has pagination,
+ client-side search, and dark/light themes.
 
-![venus app](/screenshots/app.gif)
+## Preview
+<img src="/screenshots/app.gif" width="300" height="675">
 
 ## Tech Stack
 
@@ -15,6 +25,9 @@ internship course.
 - [Redux](https://redux.js.org/)
 
 ## Run Locally
+If you have not yet implemented a project with React Native on 
+your system, first you need to 
+[*set up the development environment*](https://reactnative.dev/docs/environment-setup).
 
 Clone the project
 
